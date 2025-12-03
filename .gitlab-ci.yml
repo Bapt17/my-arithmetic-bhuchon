@@ -6,6 +6,6 @@ test_job:
   image: alpine:latest
   script:
     - echo "Running tests..."
-    - apk add python-hatch
+    - apk add hatch
     - hatch run test
     - echo "Tests completed."
