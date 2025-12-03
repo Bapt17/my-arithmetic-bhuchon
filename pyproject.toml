@@ -62,7 +62,7 @@ exclude_lines = [
 
 [tool.hatch.envs.test]
 dependencies = [
-  "pytest",  # ou unittest si tu préfères
+  "pytest", 
 ]
 
 [tool.hatch.envs.test.scripts]

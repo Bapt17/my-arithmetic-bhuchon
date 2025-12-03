@@ -6,7 +6,6 @@ test_job:
   image: python:slim
   script:
     - echo "Running tests..."
-    - pip3 install hatch pytest
-    - pip install my-arithmetic-bhuchon
+    - pip3 install hatch pytest mypy
     - hatch run test
     - echo "Tests completed."
