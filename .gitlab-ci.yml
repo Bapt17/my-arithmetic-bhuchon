@@ -9,6 +9,7 @@ test_job:
   script:
     - echo "Running tests..."
     - python -m pip install --upgrade pip
+    - apk add --no-cache git
     - pip install hatch pytest mypy
     - hatch test --cover
   coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
@@ -22,6 +23,7 @@ build_stable:
   script:
     - python -m pip install --upgrade pip
     - pip install hatch hatch-vcs
+    - apk add --no-cache git
     - hatch build # Construit la wheel avec la version basée sur le tag Git
     - echo "my-arithmetic-bhuchon deployment on stable servers"
     - ls -l dist/ # Affiche le contenu du dossier dist/
@@ -38,6 +40,7 @@ build_develop:
   script:
     - python -m pip install --upgrade pip
     - pip install hatch hatch-vcs
+    - apk add --no-cache git
     - hatch build # Construit la wheel avec la version basée sur le dernier commit
     - echo "my-arithmetic-bhuchon deployment on develop servers"
     - ls -l dist/ # Affiche le contenu du dossier dist/
