@@ -3,7 +3,9 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/my-arithmetic-bhuchon.svg)](https://pypi.org/project/my-arithmetic-bhuchon)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/my-arithmetic-bhuchon.svg)](https://pypi.org/project/my-arithmetic-bhuchon)
 
------
+[![coverage report](https://gitlab.univ-lr.fr/bhuchon/my-arithmetic-bhuchon/badges/main/coverage.svg?job=test_job)](https://gitlab.univ-lr.fr/bhuchon/my-arithmetic-bhuchon/-/commits/main)
+
+---
 
 ## Table of Contents
 
