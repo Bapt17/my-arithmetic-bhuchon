@@ -7,5 +7,6 @@ test_job:
   script:
     - echo "Running tests..."
     - pip3 install hatch pytest
+    - pip install my-arithmetic-bhuchon
     - hatch run test
     - echo "Tests completed."
