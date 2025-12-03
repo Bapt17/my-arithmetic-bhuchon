@@ -1,6 +1,7 @@
 stages:
   - test
   - build
+  - deploy
 
 test_job:
   stage: test
@@ -12,13 +13,34 @@ test_job:
     - hatch test --cover
   coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
 
-build_job:
+# Job pour construire et afficher le contenu de dist/ à chaque tag
+build_stable:
   stage: build
   image: python:slim
+  rules:
+    - if: "$CI_COMMIT_TAG" # Exécuté uniquement si un tag est poussé
   script:
     - python -m pip install --upgrade pip
     - pip install hatch hatch-vcs
     - hatch build # Construit la wheel avec la version basée sur le tag Git
+    - echo "my-arithmetic-bhuchon deployment on stable servers"
+    - ls -l dist/ # Affiche le contenu du dossier dist/
+  artifacts:
+    paths:
+      - dist/*.whl # Stocke la wheel générée comme artefact
+
+# Job pour construire et afficher le contenu de dist/ à chaque push sur develop
+build_develop:
+  stage: build
+  image: python:slim
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"' # Exécuté uniquement si push sur develop
+  script:
+    - python -m pip install --upgrade pip
+    - pip install hatch hatch-vcs
+    - hatch build # Construit la wheel avec la version basée sur le dernier commit
+    - echo "my-arithmetic-bhuchon deployment on develop servers"
+    - ls -l dist/ # Affiche le contenu du dossier dist/
   artifacts:
     paths:
       - dist/*.whl # Stocke la wheel générée comme artefact
