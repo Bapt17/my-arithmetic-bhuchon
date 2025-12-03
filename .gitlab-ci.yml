@@ -3,10 +3,9 @@ stages:
 
 test_job:
   stage: test
-  image: alpine:latest
+  image: python:slim
   script:
     - echo "Running tests..."
-    - apk add --no-cache python3 py3-pip
     - pip3 install hatch
     - hatch run test
     - echo "Tests completed."
