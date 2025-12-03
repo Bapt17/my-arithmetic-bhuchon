@@ -32,7 +32,11 @@ Issues = "https://github.com/Huchon Baptiste/my-arithmetic-bhuchon/issues"
 Source = "https://github.com/Huchon Baptiste/my-arithmetic-bhuchon"
 
 [tool.hatch.version]
-path = "src/my_arithmetic_bhuchon/__about__.py"
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
 
 [tool.hatch.envs.types]
 extra-dependencies = [
