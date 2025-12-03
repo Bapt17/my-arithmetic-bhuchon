@@ -1,55 +1,78 @@
 name: tp_cicd
-on: [push]
+
+on:
+  push:
+    branches:
+      - "**" # Déclenche le workflow pour tout push sur n'importe quelle branche
+    tags:
+      - "*" # Déclenche le workflow pour tout tag
+
 jobs:
   test_job:
     runs-on: ubuntu-latest
     steps:
-      -run: |
-         echo "Running tests..."
-         python -m pip install --upgrade pip
-         sudo apt update
-         sudo apt install -y git
-         pip install hatch pytest mypy
-         hatch test --cover
+      - uses: actions/checkout@v4 # Récupère le code du dépôt
 
-name: Build Stable
-on:
-  push:
-    tags:
-      - '*'
-jobs:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies and run tests
+        run: |
+          echo "Running tests..."
+          python -m pip install --upgrade pip
+          pip install hatch pytest mypy
+          hatch test --cover
+
   build_stable:
+    needs: test_job # Exécute ce job après que test_job ait réussi
+    if: startsWith(github.ref, 'refs/tags/') # Ne s'exécute que pour les tags
     runs-on: ubuntu-latest
     steps:
-      -run: |
-         python -m pip install --upgrade pip
-         pip install hatch hatch-vcs
-         sudo apt update
-         sudo apt install -y git
-         hatch build
-         echo "my-arithmetic-bhuchon deployment on stable servers"
-         ls -l dist/
-    artifacts:
-      files:
-        - dist/*.whl
+      - uses: actions/checkout@v4
 
-name: Build Develop
-on:
-  push:
-    branches:
-      - develop
-jobs:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Build wheel for stable release
+        run: |
+          python -m pip install --upgrade pip
+          pip install hatch hatch-vcs
+          hatch build
+          echo "my-arithmetic-bhuchon deployment on stable servers"
+          ls -l dist/
+
+      - name: Upload wheel as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: stable-wheel
+          path: dist/*.whl
+
   build_develop:
+    needs: test_job # Exécute ce job après que test_job ait réussi
+    if: github.ref == 'refs/heads/develop' # Ne s'exécute que pour les pushes sur develop
     runs-on: ubuntu-latest
     steps:
-      -run: |
-         python -m pip install --upgrade pip
-         pip install hatch hatch-vcs
-         sudo apt update
-         sudo apt install -y git
-         hatch build
-         echo "my-arithmetic-bhuchon deployment on develop servers"
-         ls -l dist/
-    artifacts:
-      files:
-        - dist/*.whl
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Build wheel for develop branch
+        run: |
+          python -m pip install --upgrade pip
+          pip install hatch hatch-vcs
+          hatch build
+          echo "my-arithmetic-bhuchon deployment on develop servers"
+          ls -l dist/
+
+      - name: Upload wheel as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: develop-wheel
+          path: dist/*.whl
