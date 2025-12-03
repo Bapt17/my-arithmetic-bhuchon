@@ -1,5 +1,6 @@
 stages:
   - test
+  - build
 
 test_job:
   stage: test
@@ -10,3 +11,14 @@ test_job:
     - pip install hatch pytest mypy
     - hatch test --cover
   coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+
+build_job:
+  stage: build
+  image: python:slim
+  script:
+    - python -m pip install --upgrade pip
+    - pip install hatch hatch-vcs
+    - hatch build # Construit la wheel avec la version basée sur le tag Git
+  artifacts:
+    paths:
+      - dist/*.whl # Stocke la wheel générée comme artefact
