@@ -59,3 +59,11 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pytest",  # ou unittest si tu préfères
+]
+
+[tool.hatch.envs.test.scripts]
+test = "pytest tests/"
