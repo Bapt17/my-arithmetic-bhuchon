@@ -8,5 +8,5 @@ test_job:
     - echo "Running tests..."
     - python -m pip install --upgrade pip
     - pip install hatch pytest mypy
-    - hatch run test --coverage
+    - hatch test --cover
   coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
